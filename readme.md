@@ -1,210 +1,165 @@
-Real London Property Explorer
-A web application that allows users to explore property listings in London. The project includes a React frontend and a Flask backend that scrapes property data from Rightmove and displays analytical insights.
+# Real London Property Explorer
 
-Table of Contents
-Introduction
-Features
-Technologies Used
-Project Structure
-Installation
-Prerequisites
-Backend Setup
-Frontend Setup
-Usage
-Contributing
-License
-Acknowledgments
-Introduction
-The Real London Property Explorer is a full-stack web application designed to help users find and analyze property listings in London. Users can input a Rightmove search URL, and the application will scrape the data, store it in a MongoDB database, and display various analytics like average prices, square footage distributions, and more.
+## Introduction
 
-Features
-Property Data Scraping: Scrapes property listings from Rightmove based on user-provided URLs.
-Data Storage: Stores scraped data in a MongoDB database for quick retrieval.
-Data Visualization: Displays analytical insights using charts and graphs.
-Interactive Frontend: User-friendly interface built with React.
-RESTful API: Backend API built with Flask to serve data to the frontend.
-Technologies Used
-Frontend
-React
-JavaScript
-HTML/CSS
-Recharts (for data visualization)
-Backend
-Python
-Flask
-Selenium (for web scraping)
-BeautifulSoup (for HTML parsing)
-PyMongo (for MongoDB interaction)
-Flask-CORS (to handle Cross-Origin Resource Sharing)
-Database
-MongoDB
-Project Structure
-scss
-Copy code
+The Real London Property Explorer is a comprehensive web application designed to facilitate the exploration and analysis of property listings in London. This project integrates web scraping techniques, data storage solutions, and data visualization to provide users with valuable insights into the London property market. Developed as part of a Software Engineering course, this application demonstrates proficiency in full-stack development, data processing, and user interface design.
+
+## Project Objectives
+
+1. To create a user-friendly interface for accessing and analyzing London property data.
+2. To implement efficient web scraping techniques for real-time data collection.
+3. To design a robust backend system for data processing and storage.
+4. To develop insightful data visualizations for market trend analysis.
+
+## Features
+
+- **Automated Data Collection**: Implements web scraping to extract property listings from Rightmove.
+- **Data Persistence**: Utilizes MongoDB for efficient storage and retrieval of property data.
+- **Data Analytics**: Provides statistical insights such as average prices and square footage distributions.
+- **Interactive User Interface**: Offers a responsive frontend built with React for seamless user experience.
+- **RESTful API**: Employs a Flask-based backend to serve data to the frontend efficiently.
+
+## Technical Architecture
+
+### Frontend
+- React.js
+- JavaScript (ES6+)
+- HTML5/CSS3
+- Recharts for data visualization
+
+### Backend
+- Python 3.8+
+- Flask web framework
+- Selenium for web scraping
+- BeautifulSoup for HTML parsing
+- PyMongo for database interactions
+- Flask-CORS for handling Cross-Origin Resource Sharing
+
+### Database
+- MongoDB
+
+## Project Structure
+
+```
 real-london/
 ├── backend/
 │   ├── app.py
 │   ├── scraper.py
 │   ├── requirements.txt
 │   ├── .env
-│   └── (other backend files)
+│   └── [additional backend files]
 ├── frontend/
 │   ├── src/
 │   │   ├── App.js
 │   │   ├── FrontPage.js
 │   │   ├── ResultsPage.js
-│   │   └── (other frontend files)
+│   │   └── [additional frontend files]
 │   ├── public/
 │   ├── package.json
 │   └── .env
 ├── README.md
 └── .gitignore
-Installation
-Prerequisites
-Node.js (version 14 or higher)
-npm (comes with Node.js)
-Python (version 3.8 or higher)
-pip (Python package installer)
-MongoDB (local or cloud instance)
-Google Chrome (for Selenium WebDriver)
-Backend Setup
-Clone the Repository
+```
 
-bash
-Copy code
-git clone https://github.com/your_username/real-london.git
-cd real-london/backend
-Create a Virtual Environment
+## Installation and Setup
 
-bash
-Copy code
-python3 -m venv venv
-Activate the Virtual Environment
+### Prerequisites
+- Node.js (version 14 or higher)
+- npm (included with Node.js)
+- Python (version 3.8 or higher)
+- pip (Python package installer)
+- MongoDB (local instance or cloud service)
+- Google Chrome (required for Selenium WebDriver)
 
-On macOS/Linux:
+### Backend Configuration
 
-bash
-Copy code
-source venv/bin/activate
-On Windows:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/[your_username]/real-london.git
+   cd real-london/backend
+   ```
 
-bash
-Copy code
-venv\Scripts\activate
-Install Dependencies
+2. Create and activate a virtual environment:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
 
-bash
-Copy code
-pip install -r requirements.txt
-Set Up Environment Variables
+3. Install required dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-Create a .env file in the backend/ directory with the following content:
+4. Configure environment variables:
+   Create a `.env` file in the `backend/` directory with the following content:
+   ```
+   MONGO_CONNECTION_STRING=[your_mongodb_connection_string]
+   SECRET_KEY=[your_secret_key]
+   ```
+   Replace placeholders with actual values.
 
-env
-Copy code
-MONGO_CONNECTION_STRING=your_mongodb_connection_string
-SECRET_KEY=your_secret_key
-Replace your_mongodb_connection_string with your actual MongoDB connection string.
-Replace your_secret_key with a random string for Flask's secret key.
-Set Up Selenium WebDriver
+5. Set up Selenium WebDriver:
+   - Download the ChromeDriver compatible with your Google Chrome version from the official site.
+   - Place the ChromeDriver executable in the `backend/` directory or ensure it's in your system's PATH.
 
-Download the ChromeDriver that matches your Google Chrome version from here.
-Place the chromedriver executable in the backend/ directory or ensure it's in your system's PATH.
-Frontend Setup
-Navigate to the Frontend Directory
+### Frontend Configuration
 
-bash
-Copy code
-cd ../frontend
-Install Dependencies
+1. Navigate to the frontend directory:
+   ```bash
+   cd ../frontend
+   ```
 
-bash
-Copy code
-npm install
-Set Up Environment Variables
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-Create a .env file in the frontend/ directory with the following content:
+3. Configure environment variables:
+   Create a `.env` file in the `frontend/` directory with the following content:
+   ```
+   REACT_APP_API_BASE_URL=http://localhost:5000
+   ```
 
-env
-Copy code
-REACT_APP_API_BASE_URL=http://localhost:5000
-Usage
-Running the Backend Server
-Activate the Virtual Environment
+## Usage Instructions
 
-If not already activated:
+### Starting the Backend Server
+1. Activate the virtual environment (if not already active):
+   ```bash
+   cd backend
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+2. Launch the Flask server:
+   ```bash
+   flask run
+   ```
+   The backend server will be accessible at `http://localhost:5000`.
 
-bash
-Copy code
-cd backend
-source venv/bin/activate  # On macOS/Linux
-Start the Flask Server
+### Launching the Frontend Application
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+2. Start the React development server:
+   ```bash
+   npm start
+   ```
+   The application will be available at `http://localhost:3000`.
 
-bash
-Copy code
-flask run
-The backend server should now be running on http://localhost:5000.
+### Application Workflow
+1. Access the application through a web browser at `http://localhost:3000`.
+2. Input a valid Rightmove search URL on the homepage.
+3. The application will scrape the data, process it, and display analytical insights on the results page.
 
-Running the Frontend Application
-Navigate to the Frontend Directory
+## Version Issues 
+1. RightMove's page logic may have shifted since testing, making it difficult for the scraper to scrape past the first page of results. In testing, this was met and the scraper was previously able to scrape multiple results pages. 
 
-bash
-Copy code
-cd frontend
-Start the React App
+## Future Enhancements
 
-bash
-Copy code
-npm start
-The frontend application should open in your default web browser at http://localhost:3000.
+- Implement user authentication and personalized property recommendations.
+- Expand data sources to include other property listing websites.
+- Develop advanced filtering and sorting options for property listings.
+- Integrate machine learning algorithms for predictive analytics on property prices.
 
-Using the Application
-Open the Application
+## Conclusion
 
-Go to http://localhost:3000 in your web browser.
-
-Input a Rightmove URL
-
-On the front page, enter a Rightmove search URL (e.g., a link to property listings in a specific area).
-View Results
-
-After submitting the URL, the application will scrape the data and display analytical insights on the results page.
-Contributing
-Contributions are welcome! Please follow these steps:
-
-Fork the Repository
-
-Click on the 'Fork' button at the top right of the repository page.
-
-Clone Your Fork
-
-bash
-Copy code
-git clone https://github.com/your_username/real-london.git
-Create a New Branch
-
-bash
-Copy code
-git checkout -b feature/your-feature-name
-Make Changes and Commit
-
-bash
-Copy code
-git add .
-git commit -m "Add your message here"
-Push to Your Fork
-
-bash
-Copy code
-git push origin feature/your-feature-name
-Submit a Pull Request
-
-Go to the original repository and click on 'Pull Requests' to submit your changes for review.
-
-License
-This project is licensed under the MIT License.
-
-Acknowledgments
-Rightmove: For providing the data used in this application.
-Open Source Libraries: Thank you to all the developers of the open-source libraries used in this project.
-Contributors: Thanks to everyone who has contributed to this project.
+The Real London Property Explorer demonstrates the practical application of web development technologies and data analysis techniques in solving real-world problems. This project showcases proficiency in full-stack development, data manipulation, and user interface design, providing a solid foundation for future enhancements and scalability.
