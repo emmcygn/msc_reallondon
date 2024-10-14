@@ -24,11 +24,11 @@ const ResultsPage = () => {
   const [sqFtDistribution, setSqFtDistribution] = useState('N/A');
   const [avgSquareFootage, setAvgSquareFootage] = useState(0);
   const [pricePerSqFt, setPricePerSqFt] = useState(0);
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
-  const [progress, setProgress] = useState(0); // Progress for loading
+  const [loading, setLoading] = useState(true); // for Loading state
+  const [error, setError] = useState(null); // for error handling
+  const [progress, setProgress] = useState(0); // for progress bar (ux improvement)
 
-  const [priceRange, setPriceRange] = useState([0, 100000000]); // Adjusted ranges
+  const [priceRange, setPriceRange] = useState([0, 100000000]); // price filter
   const [bedroomsRange, setBedroomsRange] = useState([0, 100]);
   const [bathroomsRange, setBathroomsRange] = useState([0, 100]);
   const [sqFtRange, setSqFtRange] = useState([0, 100000]);
@@ -44,7 +44,7 @@ const ResultsPage = () => {
 
   const location = useLocation();
 
-  // Extract search_url_origin from query params
+  // Get search_url_origin from URL parameters
   const query = new URLSearchParams(location.search);
   const search_url_origin = query.get('search_url_origin');
 
@@ -83,7 +83,7 @@ const ResultsPage = () => {
         })
         .then((data) => {
           console.log('Fetched data:', data);
-          // Process properties to add price per sq ft and price per bedroom
+          // Process properties to calculate price per sq ft and per bedroom
           const processedProperties = (data.properties || []).map((property) => {
             const { price, sqFt, bedrooms } = property;
             const pricePerSqFt = price && sqFt ? price / sqFt : null;
@@ -97,7 +97,7 @@ const ResultsPage = () => {
           setAvgSquareFootage(data.avgSquareFootage || 0);
           setPricePerSqFt(data.pricePerSqFt || 0);
 
-          // Calculate average prices by bedrooms
+          // Calculate average prices based on the number of bedrooms
           const bedroomCounts = [0, 1, 2, 3];
           const averages = {};
 
@@ -123,13 +123,13 @@ const ResultsPage = () => {
           setAveragePricesByBedrooms(averages);
 
           setLoading(false);
-          setProgress(100); // Set progress to 100% when loading is complete
+          setProgress(100); // Loading complete at 100%
         })
         .catch((error) => {
           console.error('Error fetching data:', error);
           setError(error.message);
           setLoading(false);
-          setProgress(100); // Ensure progress bar completes even on error
+          setProgress(100); // Ensure progress bar reaches 100% even with error
         });
     } catch (err) {
       console.error('Error constructing API URL:', err);
@@ -139,7 +139,7 @@ const ResultsPage = () => {
     }
   }, [search_url_origin]);
 
-  // Simulate progress bar
+  // Simulate progress bar during loading
   useEffect(() => {
     let interval;
     if (loading) {
@@ -162,7 +162,7 @@ const ResultsPage = () => {
   }, [loading]);
 
   useEffect(() => {
-    // Apply filters to properties
+    // Apply filters to the properties
     const filtered = properties.filter((property) => {
       const price = property.price || 0;
       const bedrooms = property.bedrooms || 0;
@@ -181,7 +181,7 @@ const ResultsPage = () => {
       );
     });
 
-    // Apply sorting
+    // Sort the filtered properties
     const sorted = [...filtered].sort((a, b) => {
       switch (sortOption) {
         case 'price_asc':
@@ -204,7 +204,7 @@ const ResultsPage = () => {
     setFilteredProperties(sorted);
   }, [properties, priceRange, bedroomsRange, bathroomsRange, sqFtRange, sortOption]);
 
-  // Compute top properties based on price per sq ft and price per bedroom
+  // Identify top properties based on specific criteria: price per sq ft and price per bedroom
   useEffect(() => {
     if (properties.length > 0) {
       const validPropertiesForSqFt = properties.filter(
@@ -225,7 +225,7 @@ const ResultsPage = () => {
     }
   }, [properties]);
 
-  // Function to create histogram data
+  // Function to create histogram data for charts of price and square footage
   const createHistogramData = (data, key, binSize) => {
     const bins = {};
 
@@ -269,10 +269,10 @@ const ResultsPage = () => {
     );
   }
 
-  // Add a check to ensure properties is defined and is an array
+  // Check if there are properties to display in any of the charts
   const propertiesAvailable = Array.isArray(filteredProperties) && filteredProperties.length > 0;
 
-  // Prepare histogram data
+  // Prepare data for histograms
   const priceHistogramData = createHistogramData(filteredProperties, 'price', 500000);
   const sqFtHistogramData = createHistogramData(filteredProperties, 'sqFt', 500);
 

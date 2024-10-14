@@ -11,10 +11,10 @@ function FrontPage() {
   const handleSearch = (e) => {
     e.preventDefault();
 
-    // Encode the search term once
+    // Encode the search term to include in the URL
     const encodedSearchURL = encodeURIComponent(searchTerm.trim());
 
-    // Navigate to the results page with the encoded search URL
+    // Redirect to the results page with the search term URL
     navigate(`/results?search_url_origin=${encodedSearchURL}`);
   };
 
