@@ -9,34 +9,36 @@ from selenium.webdriver.support import expected_conditions as EC
 from pymongo import MongoClient
 from concurrent.futures import ThreadPoolExecutor
 import re
-from datetime import datetime  # Added for timestamping
+from datetime import datetime  # For Timestamps
 from dotenv import load_dotenv
 import os
 
-# Load environment variables from .env file
+# Load variables from the .env file
 load_dotenv()
 
-# Retrieve the MongoDB connection string from environment variables
+# Get MongoDB connection string from environment variables
 MONGO_CONNECTION_STRING = os.getenv("MONGO_CONNECTION_STRING")
 
 class RightmoveScraperSelenium:
     def __init__(self, link=None):
         self.link = link
         chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument("--headless")  # Headless mode for faster scraping
+        chrome_options.add_argument("--headless")  # # Run Chrome in headless mode for faster scraping
         self.driver = webdriver.Chrome(options=chrome_options)
         
-        # MongoDB client initialization using the environment variable
+        # Set up MongoDB client using the connection string
         self.client = MongoClient(MONGO_CONNECTION_STRING)
         self.db = self.client['RightmoveData']
         self.collection = self.db['PropertyListings']
-        self.search_url_origin = link  # Store the search URL origin
+        self.search_url_origin = link  # Store the original search URL
+
 
     def fetch(self, url):
         print(f'Fetching {url}')
         self.driver.get(url)
 
         try:
+            # Wait for the cookie consent button and click it
             cookie_button = WebDriverWait(self.driver, 10).until(
                 EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Accept all')]"))
             )
@@ -57,6 +59,7 @@ class RightmoveScraperSelenium:
             soup = BeautifulSoup(html, 'lxml')
             text = soup.get_text()
 
+            # Use regex to find square footage in the text
             pattern = re.compile(r'(\d{1,3}(?:,\d{3})*)\s*sq ft')
             match = pattern.search(text)
 
@@ -70,6 +73,7 @@ class RightmoveScraperSelenium:
 
     def clean_price(self, price_text):
         try:
+            # Remove currency symbols and commas, then convert to integer
             return int(price_text.replace('£', '').replace(',', '').strip())
         except:
             return None
@@ -84,6 +88,7 @@ class RightmoveScraperSelenium:
         futures = []
         with ThreadPoolExecutor(max_workers=5) as executor:
             for property_card in properties:
+                # Extract various details from the property card
                 address_element = property_card.select_one('meta[itemprop="streetAddress"]')
                 address_text = address_element['content'] if address_element else 'N/A'
                 bedrooms_element = property_card.select_one('span.no-svg-bed-icon + span')
@@ -99,9 +104,10 @@ class RightmoveScraperSelenium:
                 property_url = property_url_element['href'] if property_url_element else 'N/A'
                 full_url = f"https://www.rightmove.co.uk{property_url}"
 
+                # Schedule extraction of square footage in a separate thread
                 futures.append(executor.submit(self.extract_square_footage, full_url))
 
-                # Added 'timestamp' field to each property
+                # Collect all extracted data into a dictionary
                 results.append({
                     'title': f"{address_text}, {bedrooms_text} bedrooms, {bathrooms_text} bathrooms",
                     'address': address_text,
@@ -115,6 +121,7 @@ class RightmoveScraperSelenium:
                     'timestamp': datetime.utcnow(),  # Timestamp added here
                 })
 
+            # Update the 'square_footage' in results after futures complete
             for i, future in enumerate(futures):
                 size_text = future.result()
                 results[i]['square_footage'] = size_text
@@ -122,19 +129,19 @@ class RightmoveScraperSelenium:
             self.collection.insert_many(results)
             print(f"Parsed {len(properties)} properties and saved to MongoDB.")
 
-            # Call the database size management function after insertion
+            # Manage database size after insertion
             self.manage_database_size()
 
     def manage_database_size(self):
-        # Get the total number of property entries
+        # Count total entries in the collection
         total_entries = self.collection.count_documents({})
         print(f"Total property entries in the database: {total_entries}")
 
-        # Check if the total exceeds 1000
+        # If we have more than 1000 entries, remove the oldest ones
         if total_entries > 1000:
             print("Database size exceeds 1000 entries. Initiating cleanup...")
 
-            # Find the oldest 'search_url_origin' entries
+            # Find the oldest 'search_url_origin' entries timestamp-wise
             pipeline = [
                 {
                     '$group': {
@@ -151,7 +158,7 @@ class RightmoveScraperSelenium:
             ]
             oldest_search_urls = list(self.collection.aggregate(pipeline))
 
-            # Delete data associated with these 'search_url_origin' entries
+            # Delete properties associated with the oldest search URLs
             for entry in oldest_search_urls:
                 search_url = entry['_id']
                 print(f"Deleting data for search_url_origin: {search_url}")

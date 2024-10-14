@@ -7,8 +7,10 @@ from scraper import RightmoveScraperSelenium  # Import the scraper class
 from dotenv import load_dotenv
 import os
 
+# Load variables from the .env file
 load_dotenv()
 
+# Get MongoDB connection string and secret key from environment variables
 MONGO_CONNECTION_STRING = os.getenv("MONGO_CONNECTION_STRING")
 
 app = Flask(__name__)
@@ -16,7 +18,7 @@ app = Flask(__name__)
 # Configure CORS
 CORS(app)
 
-# MongoDB setup
+# Set up MongoDB client
 client = MongoClient(
     "mongodb+srv://real_london_proj:1Test@cluster0testheh.ajsvoul.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0Testheh"
 )
@@ -59,20 +61,20 @@ def get_properties():
         scraper = RightmoveScraperSelenium(link=search_url_origin)
         scraper.run()
 
-        # After scraping, query the database again
+        # After scraping, query the database again to get the properties
         properties = list(
             collection.find({"search_url_origin": search_url_origin}).limit(37)
         )
 
         if not properties:
-            # If still no properties found, return error
+            # If still no properties found, return error response
             return jsonify({"error": "No properties found for the given URL"}), 404
 
-    # Clean and return properties
+    # Clean and return properties data
     cleaned_properties = [clean_property_data(prop) for prop in properties]
     print(f"Cleaned properties: {cleaned_properties}")  # Debugging
 
-    # Calculate additional stats
+    # Calculate additional stats for the response
     prices = [
         prop.get("price", 0)
         for prop in cleaned_properties
@@ -91,7 +93,7 @@ def get_properties():
     )
     avg_price_per_sq_ft = avg_price // avg_sq_ft if avg_sq_ft else 0
 
-    # Return the JSON response
+    # serve JSON response with property data and additional stats
     return jsonify(
         {
             "properties": cleaned_properties,
