@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scraping Input Form</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Custom CSS for centering content */
+        body, html {
+            height: 100%;
+            background-color: #f8f9fa; /* Set background color */
+        }
+        .center-div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+        /* Custom CSS for form elements */
+        .form-control {
+            border-color: #ced4da; /* Set border color */
+            color: #495057; /* Set text color */
+            background-color: #ffffff; /* Set background color */
+        }
+        .form-control:focus {
+            border-color: #80bdff; /* Set border color on focus */
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Set box shadow on focus */
+        }
+        .btn-primary {
+            color: #ffffff; /* Set text color */
+            background-color: #007bff; /* Set background color */
+            border-color: #007bff; /* Set border color */
+        }
+        .btn-primary:hover {
+            background-color: #0056b3; /* Set background color on hover */
+            border-color: #0056b3; /* Set border color on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container center-div">
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="text-center mb-4">Enter The RightMove Search URL You Want To Analyse:</h1>
+                <form action="/scrape" method="post" class="text-center">
+                    <div class="form-group">
+                        <input type="text" name="link" class="form-control" placeholder="Enter the link...">
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary" value="Submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies (optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

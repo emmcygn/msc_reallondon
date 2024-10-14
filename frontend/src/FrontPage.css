@@ -1,0 +1,74 @@
+/* Make sure the page takes full height and is centered */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  /* Main container to hold everything */
+  .front-page {
+    height: 100vh;
+    background-image: url('/Users/emmanuelcuyugan/Desktop/Real-London-Final/frontend/public/Screenshot 2024-10-11 at 21.46.11.png');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .overlay {
+    text-align: center;
+  }
+  
+  .title {
+    color: white;
+    font-size: 3rem;
+    margin-bottom: 0;
+  }
+  
+  .subtitle {
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 50px;
+  }
+  
+  .search-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.2); /* Transparent background */
+    border-radius: 50px;
+    padding: 10px;
+    width: 500px;
+  }
+  
+  .search-button {
+    background-color: #4A42D8;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-right: 10px; /* Spacing between button and input */
+  }
+  
+  .search-button svg {
+    fill: white;
+  }
+  
+  .search-input {
+    flex: 1; /* Make the input take up the rest of the space */
+    padding: 15px 20px;
+    border: none;
+    background-color: transparent;
+    color: white;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    outline: none;
+  }
+  
+  .search-input::placeholder {
+    color: #aaa;
+  }
+  
+

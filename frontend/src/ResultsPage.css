@@ -1,0 +1,68 @@
+/* ResultsPage.css */
+
+body {
+    background-color: #f8f9fa;
+  }
+  
+  .card {
+    background-color: #ffffff;
+    border: none;
+  }
+  
+  .card h5,
+  .card h6 {
+    color: #1a3e59;
+  }
+  
+  .card p {
+    color: #4a6c8c;
+  }
+  
+  .btn-primary {
+    background-color: #1a3e59;
+    border-color: #1a3e59;
+  }
+  
+  .btn-primary:hover {
+    background-color: #163a50;
+    border-color: #163a50;
+  }
+  
+  header h1 {
+    color: #1a3e59;
+  }
+  
+  .progress-bar {
+    background-color: #1a3e59;
+  }
+  
+  .container {
+    background-color: #f8f9fa;
+  }
+  
+  .card.mb-3 {
+    background-color: #e9ecef;
+  }
+  
+  .card.p-3 {
+    background-color: #ffffff;
+  }
+  
+  .card.p-4 {
+    background-color: #f8f9fa;
+  }
+  
+  .card .tile-card {
+    background-color: #cce5ff;
+  }
+  
+  .tile-card h6,
+  .tile-card h4 {
+    color: #004085;
+  }
+  
+  /* Adjust bar chart colors */
+  .recharts-bar-rectangle {
+    fill: #007bff;
+  }
+  

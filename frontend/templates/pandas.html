@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rightmove Data Analysis</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        /* Add your custom CSS styles here */
+        body {
+            background-color: #f8f9fa; /* Set background color */
+            color: #495057; /* Set text color */
+        }
+        .card {
+            border-color: #ced4da; /* Set border color */
+        }
+        .card-body {
+            background-color: #ffffff; /* Set background color */
+        }
+        img {
+            max-width: 100%; /* Ensure images don't exceed container width */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center">Rightmove Data Analysis</h1>
+        <div class="row mt-4 justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Display Matplotlib plot -->
+                        <img src="/plot" class="img-fluid" alt="Plot">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Back button -->
+        <div class="row mt-4 justify-content-center">
+            <div class="col-md-8">
+                <a href="/" class="btn btn-primary">Make a Different Search</a>
+            </div>
+        </div>
+        <div class="row mt-4 justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Display pandas DataFrame -->
+                        {{ data|safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap JS and dependencies (optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
